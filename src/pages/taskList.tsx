@@ -40,9 +40,9 @@ export const ShowTaskList = () => {
             width: {
               xs: "90%",
               sm: "90%",
-              md: "90%",
-              lg: "40%",
-              xl: "40%",
+              md: "60%",
+              lg: "60%",
+              xl: "60%",
             },
             marginX: "auto",
             marginBottom: "4px",
