@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { RecoilRoot } from "recoil";
-import { ShowGroupList } from "./groupList";
-import { ShowTaskList } from './taskList';
+import { ShowGroupList } from "./pages/groupList";
+import { ShowTaskList } from './pages/taskList';
 
 //タスクオブジェクト定義
 export type taskInfo = {
