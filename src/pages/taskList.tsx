@@ -15,7 +15,7 @@ import { ShowFAB } from '../components/fab';
 
 export const ShowTaskList = () => {
   const param = useParams();
-  const name:string|undefined = !param.groupName ? param.groupName : "(no data)";
+  const name= param.groupName;
 
   //データ管理
   const [tasks, setTasks] = useState(testdata);
