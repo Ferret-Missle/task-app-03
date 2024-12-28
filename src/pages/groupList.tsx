@@ -10,10 +10,9 @@ import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import { theme } from '../components/theme';
 import { ShowFAB } from '../components/fab';
-import EditIcon from '@mui/icons-material/Edit';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import DeleteIcon from '@mui/icons-material/Delete';
-
-export const ShowGroupList=()=>{
+export const ShowGroupList = () => {
   //画面遷移
   const navi=useNavigate();
   const handleClick=(url:string)=>navi(url);
@@ -30,14 +29,14 @@ export const ShowGroupList=()=>{
         <ShowAppBar title='フォルダ一覧' isGroupList={true}/>
       </header>
       <body>
-      <List sx={{marginTop:'8px'}}>
+      <List sx={{bgcolor:theme.palette.primary.dark}}>
         {groups.sort().map((group) =>
           <ListItem sx={{
             border: "2px solid",
             borderRadius: "8px",
             borderColor: theme.palette.primary.main,
-            bgcolor: theme.palette.primary.light,
-            color:theme.palette.primary.dark,
+            bgcolor: "white",
+            color:"darkgreen",
             width: {
               xs: "90%",
               sm: "90%",
@@ -60,15 +59,16 @@ export const ShowGroupList=()=>{
                 onClick={() => handleClick("/" + group)}>
               <ListItemText>{group}</ListItemText>
             </Button>
-            <IconButton sx={{ marginX: "0px" }}
+            <IconButton
+              onClick={()=>deleteGroup(group)}
             >
-              <EditIcon />
+              <DeleteIcon/>
             </IconButton>
             <IconButton
-              onClick={() => deleteGroup(group)}
+              onClick={() => handleClick("/" + group)}
               sx={{ marginLeft: "0px", marginRight: "8px" }}
             >
-              <DeleteIcon />
+              <ArrowForwardIosIcon sx={{color:"darkgreen"}} />
             </IconButton>
           </ListItem>
         )}
