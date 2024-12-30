@@ -37,7 +37,6 @@ export const ShowGroupList = () => {
             borderColor: theme.palette.primary.main,
             bgcolor: "white",
             color: "darkgreen",
-            fontSize:"36px",
             width: {
               xs: "90%",
               sm: "90%",
