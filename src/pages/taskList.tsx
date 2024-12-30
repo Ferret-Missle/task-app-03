@@ -33,7 +33,6 @@ export const ShowTaskList = () => {
       <List sx={{bgcolor:theme.palette.primary.dark}}>
         {tasks.map((task) =>
           <ListItem sx={{
-            // border: "1px solid",
             borderRadius: "8px",
             borderColor: theme.palette.primary.main,
             bgcolor: "white",

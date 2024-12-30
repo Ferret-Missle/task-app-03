@@ -12,6 +12,7 @@ import { theme } from '../components/theme';
 import { ShowFAB } from '../components/fab';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import DeleteIcon from '@mui/icons-material/Delete';
+
 export const ShowGroupList = () => {
   //画面遷移
   const navi=useNavigate();
@@ -32,7 +33,6 @@ export const ShowGroupList = () => {
       <List sx={{bgcolor:theme.palette.primary.dark}}>
         {groups.sort().map((group) =>
           <ListItem sx={{
-            // border: "1px solid",
             borderRadius: "8px",
             borderColor: theme.palette.primary.main,
             bgcolor: "white",
