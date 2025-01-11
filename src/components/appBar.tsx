@@ -2,17 +2,17 @@ import { theme } from "../components/theme";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import MenuIcon from '@mui/icons-material/Menu';
-import { ThemeProvider } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import MenuIcon from "@mui/icons-material/Menu";
+import { ThemeProvider } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
 import { useNavigate } from "react-router-dom";
 
 export function ShowAppBar({
   title = "(no data)",
   isGroupList,
 }: {
-  title: string|undefined;
+  title: string | undefined;
   isGroupList: boolean;
 }) {
   //画面遷移管理
@@ -38,7 +38,7 @@ export function ShowAppBar({
             </IconButton>
           ) : (
             <IconButton
-              onClick={() => handleClick("/")}
+              onClick={() => handleClick("/groups")}
               sx={{
                 color: "white",
                 borderRadius: "50%",

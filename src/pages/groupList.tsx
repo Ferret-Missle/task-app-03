@@ -32,25 +32,23 @@ export const ShowGroupList = () => {
         <ShowAppBar title="フォルダ一覧" isGroupList={true} />
       </header>
       <body>
-        <List sx={{ bgcolor: theme.palette.primary.dark }}>
+        <List>
           {groups.sort().map((group) => (
             <ListItem
               sx={{
-                borderRadius: "8px",
                 borderColor: theme.palette.primary.main,
                 bgcolor: "white",
                 color: "darkgreen",
                 width: {
-                  xs: "90%",
-                  sm: "90%",
-                  md: "60%",
+                  xs: "100%",
+                  sm: "100%",
+                  md: "100%",
                   lg: "60%",
                   xl: "60%",
                 },
+                paddingLeft: "36px",
+                paddingRight: "8px",
                 marginX: "auto",
-                marginBottom: "4px",
-                paddingLeft: "8px",
-                paddingRight: "0px",
               }}
             >
               <Button
@@ -58,7 +56,7 @@ export const ShowGroupList = () => {
                   color: "darkgreen",
                   textAlign: "left",
                   width: "100%",
-                  display: "block",
+                  // display: "block",
                 }}
                 onClick={() => handleClick("/" + group)}
               >

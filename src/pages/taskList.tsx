@@ -32,27 +32,27 @@ export const ShowTaskList = () => {
         <ShowAppBar title={name} isGroupList={false} />
       </header>
       <body>
-        <List sx={{ bgcolor: theme.palette.primary.dark }}>
+        <List>
           {tasks.map((task) => (
             <ListItem
               sx={{
-                borderRadius: "8px",
                 borderColor: theme.palette.primary.main,
                 bgcolor: "white",
                 color: "darkgreen",
+                // borderBottom: "solid 1px black",
                 width: {
-                  xs: "90%",
-                  sm: "90%",
-                  md: "60%",
+                  xs: "100%",
+                  sm: "100%",
+                  md: "100%",
                   lg: "60%",
                   xl: "60%",
                 },
+                paddingLeft: "12px",
+                paddingRight: "8px",
                 marginX: "auto",
-                marginBottom: "4px",
-                padding: "0px",
               }}
             >
-              <Checkbox sx={{ color: "darkgreen", marginRight: "8px" }} />
+              <Checkbox sx={{ color: "darkgreen", marginRight: "16px" }} />
               <ListItemText
                 sx={{ color: "darkgreen" }}
                 primary={task.taskName}
