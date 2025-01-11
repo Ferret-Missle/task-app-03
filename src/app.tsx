@@ -7,7 +7,7 @@ import { ShowAuth } from "./pages/login";
 //タスクオブジェクト定義
 export type taskInfo = {
   id: string;
-  groupName:string;
+  groupName: string;
   taskName: string;
   period: string;
   checked: boolean;
@@ -19,7 +19,7 @@ export function App() {
     <RecoilRoot>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<ShowAuth/>}/>
+          <Route path="/" element={<ShowAuth />} />
           <Route path="/groups/" element={<ShowGroupList />} />
           <Route path="/:groupName" element={<ShowTaskList />} />
         </Routes>

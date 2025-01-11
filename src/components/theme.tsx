@@ -1,4 +1,3 @@
-
 import { createTheme } from "@mui/material";
 
 //アプリテーマ
