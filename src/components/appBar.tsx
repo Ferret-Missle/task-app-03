@@ -8,13 +8,13 @@ import { ThemeProvider } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { useNavigate } from "react-router-dom";
 
-export function ShowAppBar({
+export const ShowAppBar = ({
   title = "(no data)",
   isGroupList,
 }: {
   title: string | undefined;
   isGroupList: boolean;
-}) {
+}) => {
   //画面遷移管理
   const navi = useNavigate();
   const handleClick = (url: string) => navi(url);
@@ -58,4 +58,4 @@ export function ShowAppBar({
       <Toolbar />
     </ThemeProvider>
   );
-}
+};

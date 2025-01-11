@@ -8,11 +8,9 @@ import { theme } from "../components/theme";
 import { ShowAppBar } from "../components/appBar";
 import { testdata } from "../assets/testdata";
 import { useState } from "react";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useParams } from "react-router-dom";
 import { ShowFAB } from "../components/fab";
-
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 export const ShowTaskList = () => {
   const param = useParams();
   const name = param.groupName;
@@ -24,6 +22,16 @@ export const ShowTaskList = () => {
       return task.id !== target;
     });
     setTasks(newTasks);
+  };
+
+  const handleCheck = (id: string) => {
+    const checkChange = tasks.map((task) => {
+      if (task.id === id) {
+        return { ...task, checked: !task.checked };
+      }
+      return task;
+    });
+    setTasks(checkChange);
   };
 
   return (
@@ -39,7 +47,6 @@ export const ShowTaskList = () => {
                 borderColor: theme.palette.primary.main,
                 bgcolor: "white",
                 color: "darkgreen",
-                // borderBottom: "solid 1px black",
                 width: {
                   xs: "100%",
                   sm: "100%",
@@ -47,28 +54,24 @@ export const ShowTaskList = () => {
                   lg: "60%",
                   xl: "60%",
                 },
-                paddingLeft: "12px",
-                paddingRight: "8px",
-                marginX: "auto",
               }}
             >
-              <Checkbox sx={{ color: "darkgreen", marginRight: "16px" }} />
+              <Checkbox
+                sx={{ color: "darkgreen", marginRight: "16px" }}
+                defaultChecked={task.checked}
+                onChange={() => handleCheck(task.id)}
+              />
               <ListItemText
                 sx={{ color: "darkgreen" }}
                 primary={task.taskName}
-                secondary={task.period}
+                secondary={"create:" + task.period}
               />
-              <IconButton sx={{ marginX: "0px" }}>
-                <EditIcon />
-              </IconButton>
-              <IconButton
-                onClick={() => deleteTask(task.id)}
-                sx={{ marginLeft: "0px", marginRight: "8px" }}
-              >
-                <DeleteIcon />
+              <IconButton onClick={() => deleteTask(task.id)}>
+                <MoreVertIcon />
               </IconButton>
             </ListItem>
           ))}
+          <ListItem sx={{ height: "60px" }} />
         </List>
       </body>
       <footer>

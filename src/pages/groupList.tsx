@@ -1,4 +1,3 @@
-import ListItemText from "@mui/material/ListItemText";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import { useNavigate } from "react-router-dom";
@@ -6,13 +5,12 @@ import { ShowAppBar } from "../components/appBar";
 import { useState } from "react";
 import { groupdata } from "../assets/testdata";
 import { ThemeProvider } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
+import ListItemText from "@mui/material/ListItemText";
+import IconButton from "@mui/material/IconButton";
 import { theme } from "../components/theme";
 import { ShowFAB } from "../components/fab";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import DeleteIcon from "@mui/icons-material/Delete";
-
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 export const ShowGroupList = () => {
   //画面遷移
   const navi = useNavigate();
@@ -46,33 +44,17 @@ export const ShowGroupList = () => {
                   lg: "60%",
                   xl: "60%",
                 },
-                paddingLeft: "36px",
-                paddingRight: "8px",
-                marginX: "auto",
               }}
             >
-              <Button
-                sx={{
-                  color: "darkgreen",
-                  textAlign: "left",
-                  width: "100%",
-                  // display: "block",
-                }}
-                onClick={() => handleClick("/" + group)}
-              >
+              <Button onClick={() => handleClick("/" + group)}>
                 <ListItemText>{group}</ListItemText>
               </Button>
               <IconButton onClick={() => deleteGroup(group)}>
-                <DeleteIcon />
-              </IconButton>
-              <IconButton
-                onClick={() => handleClick("/" + group)}
-                sx={{ marginLeft: "0px", marginRight: "8px" }}
-              >
-                <ArrowForwardIosIcon sx={{ color: "darkgreen" }} />
+                <MoreVertIcon />
               </IconButton>
             </ListItem>
           ))}
+          <ListItem sx={{ height: "48px" }} />
         </List>
       </body>
       <footer>

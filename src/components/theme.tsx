@@ -7,6 +7,18 @@ export const theme = createTheme({
     fontSize: 16,
     button: { textTransform: "none" },
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          color: "darkgreen",
+          textAlign: "left",
+          width: "100%",
+          paddingLeft: "36px",
+        },
+      },
+    },
+  },
   palette: {
     primary: {
       //main色

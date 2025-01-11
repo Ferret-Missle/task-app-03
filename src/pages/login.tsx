@@ -1,3 +1,5 @@
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 
 export const ShowAuth = () => {
@@ -7,8 +9,12 @@ export const ShowAuth = () => {
 
   return (
     <>
-      <h1>ユーザー登録</h1>
-      <button onClick={() => handleClick("/groups")}>ログインボタン</button>
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <h1>ユーザー登録</h1>
+        <Button onClick={() => handleClick("/groups")} variant="contained">
+          ログインボタン（Auth処理は後回し）
+        </Button>
+      </Box>
     </>
   );
 };
