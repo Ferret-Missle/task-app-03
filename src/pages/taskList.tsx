@@ -2,6 +2,8 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { ThemeProvider } from "@mui/material";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
 import IconButton from "@mui/material/IconButton";
 import Checkbox from "@mui/material/Checkbox";
 import { theme } from "../components/theme";
@@ -24,7 +26,8 @@ export const ShowTaskList = () => {
     setTasks(newTasks);
   };
 
-  const handleCheck = (id: string) => {
+  //チェックボタン押下時
+  const clickCheck = (id: string) => {
     const checkChange = tasks.map((task) => {
       if (task.id === id) {
         return { ...task, checked: !task.checked };
@@ -32,6 +35,41 @@ export const ShowTaskList = () => {
       return task;
     });
     setTasks(checkChange);
+    console.log("delete id is " + id);
+  };
+
+  //Menuボタン押下時
+  const ShowMenu = (id: string) => {
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const clickMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+      setAnchorEl(event.currentTarget);
+      console.log("menu id is " + id);
+    };
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+
+    return (
+      <div>
+        <IconButton
+          aria-controls={"menu-" + id}
+          aria-haspopup="true"
+          onClick={clickMenu}
+        >
+          <MoreVertIcon />
+        </IconButton>
+        <Menu
+          id={"menu-" + id}
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={handleClose}>Edit</MenuItem>
+          <MenuItem onClick={() => deleteTask(id)}>Delete</MenuItem>
+        </Menu>
+      </div>
+    );
   };
 
   return (
@@ -58,17 +96,15 @@ export const ShowTaskList = () => {
             >
               <Checkbox
                 sx={{ color: "darkgreen", marginRight: "16px" }}
-                defaultChecked={task.checked}
-                onChange={() => handleCheck(task.id)}
+                checked={task.checked}
+                onChange={() => clickCheck(task.id)}
               />
               <ListItemText
                 sx={{ color: "darkgreen" }}
                 primary={task.taskName}
                 secondary={"create:" + task.period}
               />
-              <IconButton onClick={() => deleteTask(task.id)}>
-                <MoreVertIcon />
-              </IconButton>
+              <ShowMenu id={task.id} />
             </ListItem>
           ))}
           <ListItem sx={{ height: "60px" }} />

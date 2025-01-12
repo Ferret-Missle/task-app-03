@@ -20,7 +20,7 @@ export function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<ShowAuth />} />
-          <Route path="/groups/" element={<ShowGroupList />} />
+          <Route path="/groups" element={<ShowGroupList />} />
           <Route path="/:groupName" element={<ShowTaskList />} />
         </Routes>
       </BrowserRouter>
