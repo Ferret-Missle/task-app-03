@@ -21,6 +21,7 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AddIcon from "@mui/icons-material/Add";
+import { taskInfo } from "../app";
 
 export const ShowTaskList = () => {
   const param = useParams();
@@ -33,11 +34,13 @@ export const ShowTaskList = () => {
       return task.id !== target;
     });
     setTasks(newTasks);
-    console.log("delete id is " + target);
+    // console.log("delete id is " + target);
   };
+  // const addTask = (id: string, name: string, date: string) => {};
 
   //チェックボタン押下時
   const clickCheck = (id: string) => {
+    // console.log("delete id is " + id);
     const checkChange = tasks.map((task) => {
       if (task.id === id) {
         return { ...task, checked: !task.checked };
@@ -45,12 +48,11 @@ export const ShowTaskList = () => {
       return task;
     });
     setTasks(checkChange);
-    console.log("delete id is " + id);
   };
 
   //Menuボタン押下時
-  const ShowMenu = ({ id }: { id: string }) => {
-    // console.log("[menu id is " + id + "]");
+  const ShowMenu = ({ task }: { task: taskInfo }) => {
+    // console.log("[menu id is " + task.id + "]");
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const clickMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
       setAnchorEl(event.currentTarget);
@@ -62,21 +64,23 @@ export const ShowTaskList = () => {
     return (
       <div>
         <IconButton
-          aria-controls={"menu-" + id}
+          aria-controls={"menu-" + task.id}
           aria-haspopup="true"
           onClick={clickMenu}
         >
           <MoreVertIcon />
         </IconButton>
         <Menu
-          id={"menu-" + id}
+          id={"menu-" + task.id}
           anchorEl={anchorEl}
           keepMounted
           open={Boolean(anchorEl)}
-          onClose={() => handleClose}
+          onClose={handleClose}
         >
-          <MenuItem onClick={() => handleClose}>Edit</MenuItem>
-          <MenuItem onClick={() => deleteTask(id)}>Delete</MenuItem>
+          <MenuItem onClick={() => openDialog(task.taskName, task.period)}>
+            Edit
+          </MenuItem>
+          <MenuItem onClick={() => deleteTask(task.id)}>Delete</MenuItem>
         </Menu>
       </div>
     );
@@ -84,13 +88,18 @@ export const ShowTaskList = () => {
 
   //ダイアログ管理
   const [open, setOpen] = useState<boolean>(false);
-  const openDialog = () => {
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const openDialog = (defName: string, defDate: string) => {
+    setIsEdit(!defName ? false : true);
+    setTaskname(defName);
+    setTaskdate(defDate);
     setOpen(true);
+    console.log("name:" + defName + " date:" + defDate + " isEdit:" + isEdit);
   };
   const closeDialog = () => {
+    setOpen(false);
     setTaskname("");
     setTaskdate("");
-    setOpen(false);
   };
 
   //入力欄管理
@@ -129,7 +138,7 @@ export const ShowTaskList = () => {
                 primary={task.taskName}
                 secondary={"create:" + task.period}
               />
-              <ShowMenu id={task.id} />
+              <ShowMenu task={task} />
             </ListItem>
           ))}
           <ListItem sx={{ height: "60px" }} />
@@ -137,7 +146,7 @@ export const ShowTaskList = () => {
       </body>
       <footer>
         <Fab
-          onClick={() => openDialog()}
+          onClick={() => openDialog("", "")}
           size="large"
           style={{ position: "fixed", bottom: 16, right: 16 }}
           sx={{
@@ -151,7 +160,7 @@ export const ShowTaskList = () => {
           <AddIcon sx={{ fontSize: "32px" }} />
         </Fab>
         <Dialog open={open} onClose={closeDialog}>
-          <DialogTitle>タスクを追加する</DialogTitle>
+          <DialogTitle>{"タスクの" + (isEdit ? "編集" : "追加")}</DialogTitle>
           <DialogContent sx={{ padding: "8px 24px" }}>
             <DialogContentText sx={{ fontSize: "16px" }}>
               タスク名
@@ -183,7 +192,7 @@ export const ShowTaskList = () => {
               sx={{ paddingLeft: "8px", alignItems: "right" }}
               disabled={taskname && taskdate ? false : true}
             >
-              追加
+              {isEdit ? "変更" : "追加"}
             </Button>
             <Button
               onClick={closeDialog}
