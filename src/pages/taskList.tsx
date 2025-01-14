@@ -28,6 +28,26 @@ export const ShowTaskList = () => {
   const param = useParams();
   const name = param.groupName || "no data";
 
+  //ダイアログ管理
+  const [open, setOpen] = useState<boolean>(false);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const openDialog = (defName: string, defDate: string) => {
+    setIsEdit(!defName ? false : true);
+    setTaskname(defName);
+    setTaskdate(defDate);
+    setOpen(true);
+    console.log("name:" + defName + " date:" + defDate + " isEdit:" + isEdit);
+  };
+  const closeDialog = () => {
+    setOpen(false);
+    setTaskname("");
+    setTaskdate("");
+  };
+
+  //入力欄管理
+  const [taskname, setTaskname] = useState<string>("");
+  const [taskdate, setTaskdate] = useState<string>("");
+
   //データ管理
   const [tasks, setTasks] = useState(testdata);
   const deleteTask = (target: string) => {
@@ -38,16 +58,6 @@ export const ShowTaskList = () => {
     // console.log("delete id is " + target);
   };
   const addTask = (fieldName: string, fieldDate: string) => {
-    // const newTasks = [
-    //   {
-    //     id: uuidv4(),
-    //     groupName: param,
-    //     taskName: fieldName,
-    //     period: fieldDate,
-    //     checked: false,
-    //   },
-    //   ...tasks,
-    // ];
     setTasks([
       {
         id: uuidv4(),
@@ -58,6 +68,7 @@ export const ShowTaskList = () => {
       },
       ...tasks,
     ]);
+    closeDialog();
   };
   // const editTask = (id: string, name: string, date: string) => {};
   //チェックボタン押下時
@@ -107,26 +118,6 @@ export const ShowTaskList = () => {
       </div>
     );
   };
-
-  //ダイアログ管理
-  const [open, setOpen] = useState<boolean>(false);
-  const [isEdit, setIsEdit] = useState<boolean>(false);
-  const openDialog = (defName: string, defDate: string) => {
-    setIsEdit(!defName ? false : true);
-    setTaskname(defName);
-    setTaskdate(defDate);
-    setOpen(true);
-    console.log("name:" + defName + " date:" + defDate + " isEdit:" + isEdit);
-  };
-  const closeDialog = () => {
-    setOpen(false);
-    setTaskname("");
-    setTaskdate("");
-  };
-
-  //入力欄管理
-  const [taskname, setTaskname] = useState<string>("");
-  const [taskdate, setTaskdate] = useState<string>("");
 
   return (
     <ThemeProvider theme={theme}>
