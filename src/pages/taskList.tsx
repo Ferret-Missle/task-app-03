@@ -26,7 +26,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export const ShowTaskList = () => {
   const param = useParams();
-  const name = param.groupName;
+  const name = param.groupName || "no data";
 
   //データ管理
   const [tasks, setTasks] = useState(testdata);
@@ -38,17 +38,26 @@ export const ShowTaskList = () => {
     // console.log("delete id is " + target);
   };
   const addTask = (fieldName: string, fieldDate: string) => {
-    const newTasks = [
+    // const newTasks = [
+    //   {
+    //     id: uuidv4(),
+    //     groupName: param,
+    //     taskName: fieldName,
+    //     period: fieldDate,
+    //     checked: false,
+    //   },
+    //   ...tasks,
+    // ];
+    setTasks([
       {
         id: uuidv4(),
-        groupName: param,
+        groupName: name,
         taskName: fieldName,
         period: fieldDate,
         checked: false,
       },
       ...tasks,
-    ];
-    setTasks(newTasks);
+    ]);
   };
   // const editTask = (id: string, name: string, date: string) => {};
   //チェックボタン押下時
