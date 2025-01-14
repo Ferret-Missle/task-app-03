@@ -22,6 +22,7 @@ import { useParams } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AddIcon from "@mui/icons-material/Add";
 import { taskInfo } from "../app";
+import { v4 as uuidv4 } from "uuid";
 
 export const ShowTaskList = () => {
   const param = useParams();
@@ -36,8 +37,20 @@ export const ShowTaskList = () => {
     setTasks(newTasks);
     // console.log("delete id is " + target);
   };
-  // const addTask = (id: string, name: string, date: string) => {};
-
+  const addTask = (fieldName: string, fieldDate: string) => {
+    const newTasks = [
+      {
+        id: uuidv4(),
+        groupName: param,
+        taskName: fieldName,
+        period: fieldDate,
+        checked: false,
+      },
+      ...tasks,
+    ];
+    setTasks(newTasks);
+  };
+  // const editTask = (id: string, name: string, date: string) => {};
   //チェックボタン押下時
   const clickCheck = (id: string) => {
     // console.log("delete id is " + id);
@@ -188,7 +201,7 @@ export const ShowTaskList = () => {
           </DialogContent>
           <DialogActions sx={{ paddingTop: "16px" }}>
             <Button
-              onClick={closeDialog}
+              onClick={() => addTask(taskname, taskdate)}
               sx={{ paddingLeft: "8px", alignItems: "right" }}
               disabled={taskname && taskdate ? false : true}
             >
