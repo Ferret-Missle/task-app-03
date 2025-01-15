@@ -16,13 +16,15 @@ import IconButton from "@mui/material/IconButton";
 import Checkbox from "@mui/material/Checkbox";
 import { theme } from "../components/theme";
 import { ShowAppBar } from "../components/appBar";
-import { testdata } from "../assets/testdata";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AddIcon from "@mui/icons-material/Add";
 import { taskInfo } from "../app";
 import { v4 as uuidv4 } from "uuid";
+import { useRecoilState } from "recoil";
+import { tasksState } from "../assets/states";
+import dayjs from "dayjs";
 
 export const ShowTaskList = () => {
   const param = useParams();
@@ -30,13 +32,13 @@ export const ShowTaskList = () => {
 
   //ダイアログ管理
   const [open, setOpen] = useState<boolean>(false);
-  const [isEdit, setIsEdit] = useState<boolean>(false);
-  const openDialog = (defName: string, defDate: string) => {
-    setIsEdit(!defName ? false : true);
+  const [isEdit, setIsEdit] = useState<string>("");
+  const openDialog = (id: string, defName: string, defDate: string) => {
+    setIsEdit(id);
     setTaskname(defName);
     setTaskdate(defDate);
     setOpen(true);
-    console.log("name:" + defName + " date:" + defDate + " isEdit:" + isEdit);
+    console.log("id: " + id + "name:" + defName + " date:" + defDate);
   };
   const closeDialog = () => {
     setOpen(false);
@@ -49,7 +51,7 @@ export const ShowTaskList = () => {
   const [taskdate, setTaskdate] = useState<string>("");
 
   //データ管理
-  const [tasks, setTasks] = useState(testdata);
+  const [tasks, setTasks] = useRecoilState(tasksState);
   const deleteTask = (target: string) => {
     const newTasks = tasks.filter((task) => {
       return task.id !== target;
@@ -70,7 +72,19 @@ export const ShowTaskList = () => {
     ]);
     closeDialog();
   };
-  // const editTask = (id: string, name: string, date: string) => {};
+  const editTask = () => {
+    closeDialog();
+  };
+  // const editTask = (id: string, fieldName: string, fieldDate: string) => {
+  //   const newTasks = tasks.map(task => {
+  //     if (task.id !== id) {
+  //       return (...task,taskName:fieldName, fieldDate);
+  //     }
+  //     return task;
+  //   })
+  //   setTasks(newTasks);
+  //   closeDialog();
+  // };
   //チェックボタン押下時
   const clickCheck = (id: string) => {
     // console.log("delete id is " + id);
@@ -110,7 +124,9 @@ export const ShowTaskList = () => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <MenuItem onClick={() => openDialog(task.taskName, task.period)}>
+          <MenuItem
+            onClick={() => openDialog(task.id, task.taskName, task.period)}
+          >
             Edit
           </MenuItem>
           <MenuItem onClick={() => deleteTask(task.id)}>Delete</MenuItem>
@@ -149,7 +165,9 @@ export const ShowTaskList = () => {
               <ListItemText
                 sx={{ color: "darkgreen" }}
                 primary={task.taskName}
-                secondary={"create:" + task.period}
+                secondary={
+                  "create:" + dayjs(new Date(task.period)).format("YYYY/MM/DD")
+                }
               />
               <ShowMenu task={task} />
             </ListItem>
@@ -159,7 +177,7 @@ export const ShowTaskList = () => {
       </body>
       <footer>
         <Fab
-          onClick={() => openDialog("", "")}
+          onClick={() => openDialog("", "", "")}
           size="large"
           style={{ position: "fixed", bottom: 16, right: 16 }}
           sx={{
@@ -201,7 +219,9 @@ export const ShowTaskList = () => {
           </DialogContent>
           <DialogActions sx={{ paddingTop: "16px" }}>
             <Button
-              onClick={() => addTask(taskname, taskdate)}
+              onClick={() =>
+                isEdit === "" ? addTask(taskname, taskdate) : editTask
+              }
               sx={{ paddingLeft: "8px", alignItems: "right" }}
               disabled={taskname && taskdate ? false : true}
             >
