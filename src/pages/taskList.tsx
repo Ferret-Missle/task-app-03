@@ -72,19 +72,17 @@ export const ShowTaskList = () => {
     ]);
     closeDialog();
   };
-  const editTask = () => {
+  const editTask = (id: string, fieldName: string, fieldDate: string) => {
+    const newTasks = tasks.map((task) => {
+      if (task.id === id) {
+        return { ...task, taskName: fieldName, period: fieldDate };
+      }
+      return task;
+    });
+    setTasks(newTasks);
     closeDialog();
   };
-  // const editTask = (id: string, fieldName: string, fieldDate: string) => {
-  //   const newTasks = tasks.map(task => {
-  //     if (task.id !== id) {
-  //       return (...task,taskName:fieldName, fieldDate);
-  //     }
-  //     return task;
-  //   })
-  //   setTasks(newTasks);
-  //   closeDialog();
-  // };
+
   //チェックボタン押下時
   const clickCheck = (id: string) => {
     // console.log("delete id is " + id);
@@ -142,36 +140,40 @@ export const ShowTaskList = () => {
       </header>
       <body>
         <List>
-          {tasks.map((task) => (
-            <ListItem
-              sx={{
-                borderColor: theme.palette.primary.main,
-                bgcolor: "white",
-                color: "darkgreen",
-                width: {
-                  xs: "100%",
-                  sm: "100%",
-                  md: "100%",
-                  lg: "60%",
-                  xl: "60%",
-                },
-              }}
-            >
-              <Checkbox
-                sx={{ color: "darkgreen", marginRight: "16px" }}
-                checked={task.checked}
-                onChange={() => clickCheck(task.id)}
-              />
-              <ListItemText
-                sx={{ color: "darkgreen" }}
-                primary={task.taskName}
-                secondary={
-                  "create:" + dayjs(new Date(task.period)).format("YYYY/MM/DD")
-                }
-              />
-              <ShowMenu task={task} />
-            </ListItem>
-          ))}
+          {tasks.map(
+            (task) =>
+              task.groupName === name && (
+                <ListItem
+                  sx={{
+                    borderColor: theme.palette.primary.main,
+                    bgcolor: "white",
+                    color: "darkgreen",
+                    width: {
+                      xs: "100%",
+                      sm: "100%",
+                      md: "100%",
+                      lg: "60%",
+                      xl: "60%",
+                    },
+                  }}
+                >
+                  <Checkbox
+                    sx={{ color: "darkgreen", marginRight: "16px" }}
+                    checked={task.checked}
+                    onChange={() => clickCheck(task.id)}
+                  />
+                  <ListItemText
+                    sx={{ color: "darkgreen" }}
+                    primary={task.taskName}
+                    secondary={
+                      "create:" +
+                      dayjs(new Date(task.period)).format("YYYY/MM/DD")
+                    }
+                  />
+                  <ShowMenu task={task} />
+                </ListItem>
+              )
+          )}
           <ListItem sx={{ height: "60px" }} />
         </List>
       </body>
@@ -220,7 +222,9 @@ export const ShowTaskList = () => {
           <DialogActions sx={{ paddingTop: "16px" }}>
             <Button
               onClick={() =>
-                isEdit === "" ? addTask(taskname, taskdate) : editTask
+                isEdit === ""
+                  ? addTask(taskname, taskdate)
+                  : editTask(isEdit, taskname, taskdate)
               }
               sx={{ paddingLeft: "8px", alignItems: "right" }}
               disabled={taskname && taskdate ? false : true}
