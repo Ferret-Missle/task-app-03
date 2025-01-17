@@ -25,6 +25,8 @@ export const ShowGroupList = () => {
     setGroups(newGroups);
   };
 
+  //ダイアログ管理
+
   return (
     <RecoilRoot>
       <ThemeProvider theme={theme}>
