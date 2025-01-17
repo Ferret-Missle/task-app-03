@@ -3,14 +3,22 @@ import ListItem from "@mui/material/ListItem";
 import { useNavigate } from "react-router-dom";
 import { ShowAppBar } from "../components/appBar";
 import { ThemeProvider } from "@mui/material";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import TextField from "@mui/material/TextField";
+import Fab from "@mui/material/Fab";
 import Button from "@mui/material/Button";
 import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
 import { theme } from "../components/theme";
-import { ShowFAB } from "../components/fab";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { RecoilRoot, useRecoilState } from "recoil";
 import { groupState } from "../assets/states";
+import AddIcon from "@mui/icons-material/Add";
+import { useState } from "react";
 
 export const ShowGroupList = () => {
   //画面遷移
@@ -26,6 +34,15 @@ export const ShowGroupList = () => {
   };
 
   //ダイアログ管理
+  const [open, setOpen] = useState<boolean>(false);
+  const [inputName, setInputName] = useState<string>("");
+  const openDialog = (defName: string) => {
+    setInputName(defName);
+    setOpen(true);
+  };
+  const closeDialog = () => {
+    setOpen(false);
+  };
 
   return (
     <RecoilRoot>
@@ -62,7 +79,55 @@ export const ShowGroupList = () => {
           </List>
         </body>
         <footer>
-          <ShowFAB />
+          <Fab
+            onClick={() => openDialog("")}
+            size="large"
+            style={{ position: "fixed", bottom: 16, right: 16 }}
+            sx={{
+              color: theme.palette.success.contrastText,
+              bgcolor: theme.palette.success.main,
+              ":hover": {
+                bgcolor: theme.palette.success.light,
+              },
+            }}
+          >
+            <AddIcon sx={{ fontSize: "32px" }} />
+          </Fab>
+          <Dialog open={open} onClose={closeDialog}>
+            <DialogTitle>{"グループ追加"}</DialogTitle>
+            <DialogContent sx={{ padding: "8px 24px" }}>
+              <DialogContentText sx={{ fontSize: "16px" }}>
+                グループ名
+              </DialogContentText>
+              <TextField
+                autoFocus={true}
+                value={inputName}
+                type="text"
+                variant="outlined"
+                sx={{ width: "100%", fontSize: "16px" }}
+                onChange={(e) => setInputName(e.target.value)}
+              />
+            </DialogContent>
+            <DialogActions sx={{ paddingTop: "16px" }}>
+              <Button
+                // onClick={() =>
+                //   isEdit === ""
+                //     ? addTask(taskname, taskdate)
+                //     : editTask(isEdit, taskname, taskdate)
+                // }
+                sx={{ paddingLeft: "8px", alignItems: "right" }}
+                disabled={inputName ? false : true}
+              >
+                追加
+              </Button>
+              <Button
+                onClick={closeDialog}
+                sx={{ paddingLeft: "8px", alignItems: "right" }}
+              >
+                キャンセル
+              </Button>
+            </DialogActions>
+          </Dialog>
         </footer>
       </ThemeProvider>
     </RecoilRoot>
