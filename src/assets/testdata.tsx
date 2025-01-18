@@ -25,7 +25,7 @@ export const groupdata = [
 export const testdata = [
   {
     id: "38da5397-b3e6-4a7f-aaf6-c16140767b5f",
-    groupName: "Mexico",
+    groupName: "Japan",
     taskName: "Ramirez",
     period: "2024-11-25",
     checked: false,
