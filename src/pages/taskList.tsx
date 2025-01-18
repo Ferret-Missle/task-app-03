@@ -12,7 +12,6 @@ import Checkbox from "@mui/material/Checkbox";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Fab from "@mui/material/Fab";
 import IconButton from "@mui/material/IconButton";
@@ -35,10 +34,13 @@ export const ShowTaskList = () => {
   //ダイアログ管理
   const [open, setOpen] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<string>("");
+  const today = dayjs().add(7, "day").format("YYYY-MM-DD");
   const openDialog = (id: string, defName: string, defDate: string) => {
     setIsEdit(id);
-    setTaskname(defName);
-    setTaskdate(defDate);
+    setTaskname(defName ? defName : "");
+    setTaskdate(defDate ? defDate : today);
+    setDoEdit(false);
+    setInputErr(false);
     setOpen(true);
     console.log("id: " + id + "name:" + defName + " date:" + defDate);
   };
@@ -51,6 +53,17 @@ export const ShowTaskList = () => {
   //入力欄管理
   const [taskname, setTaskname] = useState<string>("");
   const [taskdate, setTaskdate] = useState<string>("");
+  const [doEdit, setDoEdit] = useState<boolean>(false);
+  const [inputErr, setInputErr] = useState<boolean>(false);
+  const onClickInput = () => {
+    setDoEdit(true);
+  };
+  const onChangeInput = (value: string) => {
+    setTaskname(value);
+  };
+  const onBlurInput = (value: string) => {
+    if (!value && doEdit) setInputErr(true);
+  };
 
   //データ管理
   const [tasks, setTasks] = useRecoilState(tasksState);
@@ -197,36 +210,38 @@ export const ShowTaskList = () => {
         <Dialog open={open} onClose={closeDialog}>
           <DialogTitle>{"タスクの" + (isEdit ? "編集" : "追加")}</DialogTitle>
           <DialogContent sx={{ padding: "8px 24px" }}>
-            <DialogContentText sx={{ fontSize: "16px" }}>
-              タスク名
-            </DialogContentText>
             <TextField
-              autoFocus={true}
+              label="タスク名（必須）"
+              autoFocus
               value={taskname}
+              onClick={() => onClickInput()}
+              onChange={(e) => onChangeInput(e.target.value)}
               type="text"
               variant="outlined"
-              sx={{ width: "100%", fontSize: "16px" }}
-              onChange={(e) => setTaskname(e.target.value)}
+              sx={{ marginY: "16px", width: "100%", fontSize: "16px" }}
+              onBlur={(e) => onBlurInput(e.target.value)}
+              error={inputErr && !taskname}
+              helperText={
+                inputErr && !taskname ? "１文字以上入力してください" : ""
+              }
             />
           </DialogContent>
           <DialogContent sx={{ padding: "8px 24px" }}>
-            <DialogContentText sx={{ fontSize: "16px" }}>
-              期限日
-            </DialogContentText>
             <TextField
+              label="期限日（必須）"
               value={taskdate}
               onChange={(e) => setTaskdate(e.target.value)}
               type="date"
               variant="outlined"
-              sx={{ width: "100%", fontSize: "16px" }}
+              sx={{ marginY: "16px", width: "100%", fontSize: "16px" }}
             />
           </DialogContent>
           <DialogActions sx={{ paddingTop: "16px" }}>
             <Button
               onClick={() =>
                 isEdit === ""
-                  ? addTask(taskname, taskdate)
-                  : editTask(isEdit, taskname, taskdate)
+                  ? addTask(taskname!, taskdate)
+                  : editTask(isEdit, taskname!, taskdate)
               }
               sx={{ paddingLeft: "8px", alignItems: "right" }}
               disabled={taskname && taskdate ? false : true}

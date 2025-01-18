@@ -9,16 +9,19 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Fab from "@mui/material/Fab";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 
-import { groupState } from "../assets/states";
+import { taskInfo } from "../app";
+import { groupState, tasksState } from "../assets/states";
 import { ShowAppBar } from "../components/appBar";
 import { theme } from "../components/theme";
 
@@ -26,24 +29,80 @@ export const ShowGroupList = () => {
   //画面遷移
   const navi = useNavigate();
   const handleClick = (url: string) => navi(url);
+
+  //ダイアログ管理
+  const [open, setOpen] = useState<boolean>(false);
+  const [isEdit, setIsEdit] = useState<string>("");
+  const openDialog = (defName: string) => {
+    setIsEdit(defName);
+    setGroupname(defName);
+    setOpen(true);
+    // console.log("IsEdit : " + isEdit);
+  };
+  const closeDialog = () => {
+    setOpen(false);
+  };
+
+  //入力欄管理
+  const [groupname, setGroupname] = useState<string>("");
+
   //データ管理
+  const [tasks, setTasks] = useRecoilState<taskInfo[]>(tasksState);
   const [groups, setGroups] = useRecoilState<string[]>(groupState);
+  const addGroup = (target: string) => {
+    setGroups([target, ...groups]);
+    closeDialog();
+  };
+  const editGroup = (oldGroup: string, newGroup: string) => {
+    setGroups(
+      groups.map((group) => {
+        return group !== oldGroup ? group : newGroup;
+      })
+    );
+    closeDialog();
+  };
   const deleteGroup = (target: string) => {
     const newGroups = groups.filter((group) => {
       return group !== target;
     });
     setGroups(newGroups);
+    const newTasks = tasks.filter((task) => {
+      return task.groupName !== target;
+    });
+    setTasks(newTasks);
   };
 
-  //ダイアログ管理
-  const [open, setOpen] = useState<boolean>(false);
-  const [inputName, setInputName] = useState<string>("");
-  const openDialog = (defName: string) => {
-    setInputName(defName);
-    setOpen(true);
-  };
-  const closeDialog = () => {
-    setOpen(false);
+  //Menuボタン押下時
+  const ShowMenu = ({ groupname }: { groupname: string }) => {
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const clickMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+      setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+
+    return (
+      <div>
+        <IconButton
+          aria-controls={"menu-" + groupname}
+          aria-haspopup="true"
+          onClick={clickMenu}
+        >
+          <MoreVertIcon />
+        </IconButton>
+        <Menu
+          id={"menu-" + groupname}
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={() => openDialog(groupname)}>Edit</MenuItem>
+          <MenuItem onClick={() => deleteGroup(groupname)}>Delete</MenuItem>
+        </Menu>
+      </div>
+    );
   };
 
   return (
@@ -72,9 +131,7 @@ export const ShowGroupList = () => {
                 <Button onClick={() => handleClick("/" + group)}>
                   <ListItemText>{group}</ListItemText>
                 </Button>
-                <IconButton onClick={() => deleteGroup(group)}>
-                  <MoreVertIcon />
-                </IconButton>
+                <ShowMenu groupname={group} />
               </ListItem>
             ))}
             <ListItem sx={{ height: "48px" }} />
@@ -98,29 +155,28 @@ export const ShowGroupList = () => {
           <Dialog open={open} onClose={closeDialog}>
             <DialogTitle>{"グループ追加"}</DialogTitle>
             <DialogContent sx={{ padding: "8px 24px" }}>
-              <DialogContentText sx={{ fontSize: "16px" }}>
-                グループ名
-              </DialogContentText>
               <TextField
+                label="グループ名（必須）"
                 autoFocus={true}
-                value={inputName}
+                value={groupname}
                 type="text"
                 variant="outlined"
-                sx={{ width: "100%", fontSize: "16px" }}
-                onChange={(e) => setInputName(e.target.value)}
+                sx={{ marginY: "16px", width: "100%", fontSize: "16px" }}
+                onChange={(e) => setGroupname(e.target.value)}
               />
             </DialogContent>
+            <Typography></Typography>
             <DialogActions sx={{ paddingTop: "16px" }}>
               <Button
-                // onClick={() =>
-                //   isEdit === ""
-                //     ? addTask(taskname, taskdate)
-                //     : editTask(isEdit, taskname, taskdate)
-                // }
+                onClick={() =>
+                  isEdit === ""
+                    ? addGroup(groupname)
+                    : editGroup(isEdit, groupname)
+                }
                 sx={{ paddingLeft: "8px", alignItems: "right" }}
-                disabled={inputName ? false : true}
+                disabled={groupname ? false : true}
               >
-                追加
+                {isEdit === "" ? "追加" : "編集"}
               </Button>
               <Button
                 onClick={closeDialog}
