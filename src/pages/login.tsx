@@ -1,6 +1,7 @@
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
+
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 
 export const ShowAuth = () => {
   //画面遷移

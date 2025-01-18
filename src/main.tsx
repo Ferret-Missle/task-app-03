@@ -1,7 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { App } from "./app";
+
 import GlobalStyles from "@mui/material/GlobalStyles";
+
+import { App } from "./app";
+
 // import { initializeApp } from "firebase/app";
 
 //  const firebaseConfig = {

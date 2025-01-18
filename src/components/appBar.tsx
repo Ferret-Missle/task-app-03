@@ -1,12 +1,14 @@
-import { theme } from "../components/theme";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
+import { useNavigate } from "react-router-dom";
+
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import MenuIcon from "@mui/icons-material/Menu";
 import { ThemeProvider } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
-import { useNavigate } from "react-router-dom";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+
+import { theme } from "../components/theme";
 
 export const ShowAppBar = ({
   title = "(no data)",
