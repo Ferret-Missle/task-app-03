@@ -15,11 +15,13 @@
     "@fontsource/roboto": "^5.1.0",
     "@mui/icons-material": "^6.2.1",
     "@mui/material": "^6.2.1",
+    "@trejgun/material-ui-icons-google": "^0.0.3",
     "dayjs": "^1.11.13",
     "firebase": "^11.1.0",
     "firebase-tools": "^13.29.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-google-button": "^0.8.0",
     "react-router-dom": "^7.1.0",
     "recoil": "^0.7.7",
     "uuid": "^11.0.5"
