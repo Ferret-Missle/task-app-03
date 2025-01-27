@@ -19,6 +19,7 @@ import { theme } from "../components/theme";
 export const ShowAuth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [switchScreen, setSwitchScreen] = useState(true);
 
   // //Googleアカウントでのログイン
   // const singInWithGoogle = async () => {};
@@ -28,6 +29,14 @@ export const ShowAuth = () => {
   // 画面遷移
   const navi = useNavigate();
   const handleClick = (url: string) => navi(url);
+
+  //ボタン動作
+  // const handleLogin = () => {
+  //   return;
+  // };
+  const handleRegist = () => {
+    alert("click Register Button");
+  };
 
   return (
     // <>
@@ -46,8 +55,8 @@ export const ShowAuth = () => {
             width={"100%"}
             height={"48px"}
             margin={"12px 0px 0px 12px"}
-            // border={"solid 0.5px lightgray"}
             bgcolor={"white"}
+            sx={{ marginBottom: "24px" }}
           >
             <Typography
               fontSize={"28px"}
@@ -59,126 +68,235 @@ export const ShowAuth = () => {
             </Typography>
           </Box>
         </header>
-        <body>
-          <Container>
-            <Typography
-              fontSize={"20px"}
-              sx={{
-                marginTop: "24px",
-                textAlign: "center",
-              }}
-            >
-              ログイン
-            </Typography>
-            <Card
-              sx={{
-                border: "0.1px solid lightgray",
-                [theme.breakpoints.up("xs")]: { width: "100%" },
-                [theme.breakpoints.up("sm")]: { width: "60%" },
-                [theme.breakpoints.up("md")]: { width: "30%" },
-                marginX: "auto",
-                marginTop: "12px",
-                marginBottom: "24px",
-              }}
-            >
-              <CardContent sx={{ marginY: 1, textAlign: "center" }}>
-                <IconButton
-                  sx={{ border: "0.5px solid", marginBottom: "8px" }}
-                  onClick={() => alert("Button Clicked")}
+        {switchScreen ? (
+          <>
+            <body>
+              <Container>
+                <Typography
+                  fontSize={"20px"}
+                  sx={{
+                    textAlign: "center",
+                  }}
                 >
-                  <img src={googleIcon} width={"40px"} />
-                </IconButton>
-                <Typography fontSize={"12px"}>Googleでログイン</Typography>
-              </CardContent>
-              <CardContent sx={{ padding: "0", textAlign: "center" }}>
-                <Typography fontSize={"12px"}>or</Typography>
-              </CardContent>
-              <Divider />
-              <CardContent sx={{ marginY: "8px", textAlign: "center" }}>
-                <form>
-                  <Box marginBottom={"18px"}>
-                    <Typography
-                      fontSize={"16px"}
-                      textAlign={"left"}
-                      sx={{ marginBottom: "4px" }}
+                  ログイン
+                </Typography>
+                <Card
+                  sx={{
+                    border: "0.1px solid lightgray",
+                    [theme.breakpoints.up("xs")]: { width: "100%" },
+                    [theme.breakpoints.up("sm")]: { width: "60%" },
+                    [theme.breakpoints.up("md")]: { width: "40%" },
+                    // [theme.breakpoints.up("lg")]: { width: "40%" },
+                    marginX: "auto",
+                    marginTop: "12px",
+                    marginBottom: "24px",
+                  }}
+                >
+                  <CardContent sx={{ marginY: 1, textAlign: "center" }}>
+                    <IconButton
+                      sx={{ border: "0.5px solid", marginBottom: "8px" }}
+                      onClick={() => alert("Button Clicked")}
                     >
-                      メールアドレス
-                    </Typography>
-                    <TextField
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      fullWidth
-                      sx={{
-                        fontSize: "16px",
-                      }}
-                    />
-                  </Box>
-                  <Box>
-                    <Typography
-                      fontSize={"16px"}
-                      textAlign={"left"}
-                      sx={{ marginBottom: "4px" }}
-                    >
-                      パスワード
-                    </Typography>
-                    <TextField
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      fullWidth
-                      sx={{ fontSize: "16px", padding: "0" }}
-                    />
-                  </Box>
+                      <img src={googleIcon} width={"40px"} />
+                    </IconButton>
+                    <Typography fontSize={"12px"}>Googleでログイン</Typography>
+                  </CardContent>
+                  <CardContent sx={{ padding: "0", textAlign: "center" }}>
+                    <Typography fontSize={"12px"}>or</Typography>
+                  </CardContent>
+                  <Divider />
+                  <CardContent sx={{ marginY: "8px", textAlign: "center" }}>
+                    <form>
+                      <Box marginBottom={"18px"}>
+                        <Typography
+                          fontSize={"16px"}
+                          textAlign={"left"}
+                          sx={{ marginBottom: "4px" }}
+                        >
+                          メールアドレス
+                        </Typography>
+                        <TextField
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          fullWidth
+                          sx={{
+                            fontSize: "16px",
+                          }}
+                        />
+                      </Box>
+                      <Box>
+                        <Typography
+                          fontSize={"16px"}
+                          textAlign={"left"}
+                          sx={{ marginBottom: "4px" }}
+                        >
+                          パスワード
+                        </Typography>
+                        <TextField
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          fullWidth
+                          sx={{ fontSize: "16px", padding: "0" }}
+                        />
+                      </Box>
+                      <Button
+                        sx={{
+                          width: 150,
+                          marginTop: 1,
+                          marginBottom: 3,
+                          padding: 0,
+                        }}
+                        onClick={() => alert("Button Clicked")}
+                      >
+                        <Typography
+                          fontSize={"10px"}
+                          textAlign={"center"}
+                          sx={{ textDecoration: "underline" }}
+                        >
+                          パスワードを忘れた場合
+                        </Typography>
+                      </Button>
+                      <Button
+                        variant="contained"
+                        fullWidth
+                        sx={{ height: "48px" }}
+                        onClick={() => handleClick("/groups")}
+                      >
+                        <Typography color={theme.palette.success.contrastText}>
+                          ログイン
+                        </Typography>
+                      </Button>
+                    </form>
+                  </CardContent>
+                  <Divider />
                   <Button
+                    fullWidth
                     sx={{
-                      width: 150,
-                      marginTop: 1,
-                      marginBottom: 3,
                       padding: 0,
                     }}
-                    onClick={() => alert("Button Clicked")}
+                    onClick={() => setSwitchScreen(!switchScreen)}
                   >
                     <Typography
-                      fontSize={"10px"}
+                      marginY={2}
+                      paddingY={1}
+                      paddingX={4}
                       textAlign={"center"}
+                      fontSize={"12px"}
                       sx={{ textDecoration: "underline" }}
                     >
-                      パスワードを忘れた場合
+                      新規登録はこちら
                     </Typography>
                   </Button>
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    sx={{ height: "48px" }}
-                    onClick={() => handleClick("/groups")}
-                  >
-                    <Typography color={theme.palette.success.contrastText}>
-                      ログイン
-                    </Typography>
-                  </Button>
-                </form>
-              </CardContent>
-              <Divider />
-              <Button
-                fullWidth
-                sx={{
-                  padding: 0,
-                }}
-                onClick={() => alert("Button Clicked")}
-              >
+                </Card>
+              </Container>
+            </body>
+          </>
+        ) : (
+          <>
+            <body>
+              <Container>
                 <Typography
-                  marginY={2}
-                  paddingY={1}
-                  paddingX={4}
-                  textAlign={"center"}
-                  fontSize={"12px"}
-                  sx={{ textDecoration: "underline" }}
+                  fontSize={"20px"}
+                  sx={{
+                    textAlign: "center",
+                  }}
                 >
-                  新規登録はこちら
+                  新規登録
                 </Typography>
-              </Button>
-            </Card>
-          </Container>
-        </body>
+                <Card
+                  sx={{
+                    border: "0.1px solid lightgray",
+                    [theme.breakpoints.up("xs")]: { width: "100%" },
+                    [theme.breakpoints.up("sm")]: { width: "60%" },
+                    [theme.breakpoints.up("md")]: { width: "30%" },
+                    marginX: "auto",
+                    marginTop: "12px",
+                    marginBottom: "24px",
+                  }}
+                >
+                  <CardContent sx={{ marginY: 1, textAlign: "center" }}>
+                    <IconButton
+                      sx={{ border: "0.5px solid", marginBottom: "8px" }}
+                      onClick={() => alert("Button Clicked")}
+                    >
+                      <img src={googleIcon} width={"40px"} />
+                    </IconButton>
+                    <Typography fontSize={"12px"}>Googleで新規登録</Typography>
+                  </CardContent>
+                  <CardContent sx={{ padding: "0", textAlign: "center" }}>
+                    <Typography fontSize={"12px"}>or</Typography>
+                  </CardContent>
+                  <Divider />
+                  <CardContent sx={{ marginY: "8px", textAlign: "center" }}>
+                    <form>
+                      <Box marginBottom={"18px"}>
+                        <Typography
+                          fontSize={"16px"}
+                          textAlign={"left"}
+                          sx={{ marginBottom: "4px" }}
+                        >
+                          メールアドレス
+                        </Typography>
+                        <TextField
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          fullWidth
+                          sx={{
+                            fontSize: "16px",
+                          }}
+                        />
+                      </Box>
+                      <Box>
+                        <Typography
+                          fontSize={"16px"}
+                          textAlign={"left"}
+                          sx={{ marginBottom: "4px" }}
+                        >
+                          パスワード
+                        </Typography>
+                        <TextField
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          fullWidth
+                          sx={{ fontSize: "16px", marginBottom: "48px" }}
+                        />
+                      </Box>
+                      <Button
+                        variant="contained"
+                        fullWidth
+                        sx={{ height: "48px" }}
+                        onClick={() => handleRegist}
+                      >
+                        <Typography color={theme.palette.success.contrastText}>
+                          新規登録
+                        </Typography>
+                      </Button>
+                    </form>
+                  </CardContent>
+                  <Divider />
+                  <Button
+                    fullWidth
+                    sx={{
+                      padding: 0,
+                    }}
+                    onClick={() => setSwitchScreen(!switchScreen)}
+                  >
+                    <Typography
+                      marginY={2}
+                      paddingY={1}
+                      paddingX={4}
+                      textAlign={"center"}
+                      fontSize={"12px"}
+                      sx={{ textDecoration: "underline" }}
+                    >
+                      ログインはこちら
+                    </Typography>
+                  </Button>
+                </Card>
+              </Container>
+            </body>
+          </>
+        )}
       </ThemeProvider>
     </>
   );
