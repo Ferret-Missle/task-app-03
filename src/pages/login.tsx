@@ -45,10 +45,18 @@ export const ShowAuth = () => {
           <Box
             width={"100%"}
             height={"48px"}
-            border={"solid 0.5px lightgray"}
+            margin={"12px 0px 0px 12px"}
+            // border={"solid 0.5px lightgray"}
             bgcolor={"white"}
           >
-            header
+            <Typography
+              fontSize={"28px"}
+              sx={{
+                textAlign: "left",
+              }}
+            >
+              header
+            </Typography>
           </Box>
         </header>
         <body>
@@ -56,8 +64,7 @@ export const ShowAuth = () => {
             <Typography
               fontSize={"20px"}
               sx={{
-                marginTop: "48px",
-                marginBottom: "8px",
+                marginTop: "24px",
                 textAlign: "center",
               }}
             >
@@ -66,8 +73,12 @@ export const ShowAuth = () => {
             <Card
               sx={{
                 border: "0.1px solid lightgray",
-                maxWidth: "sm",
+                [theme.breakpoints.up("xs")]: { width: "100%" },
+                [theme.breakpoints.up("sm")]: { width: "60%" },
+                [theme.breakpoints.up("md")]: { width: "30%" },
                 marginX: "auto",
+                marginTop: "12px",
+                marginBottom: "24px",
               }}
             >
               <CardContent sx={{ marginY: 1, textAlign: "center" }}>
@@ -79,10 +90,13 @@ export const ShowAuth = () => {
                 </IconButton>
                 <Typography fontSize={"12px"}>Googleでログイン</Typography>
               </CardContent>
+              <CardContent sx={{ padding: "0", textAlign: "center" }}>
+                <Typography fontSize={"12px"}>or</Typography>
+              </CardContent>
               <Divider />
-              <CardContent sx={{ marginY: "16px", textAlign: "center" }}>
+              <CardContent sx={{ marginY: "8px", textAlign: "center" }}>
                 <form>
-                  <Box marginBottom={"16px"}>
+                  <Box marginBottom={"18px"}>
                     <Typography
                       fontSize={"16px"}
                       textAlign={"left"}
@@ -94,7 +108,9 @@ export const ShowAuth = () => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       fullWidth
-                      sx={{ fontSize: "16px" }}
+                      sx={{
+                        fontSize: "16px",
+                      }}
                     />
                   </Box>
                   <Box>
@@ -109,14 +125,14 @@ export const ShowAuth = () => {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       fullWidth
-                      sx={{ fontSize: "16px", paddingY: "0" }}
+                      sx={{ fontSize: "16px", padding: "0" }}
                     />
                   </Box>
                   <Button
                     sx={{
                       width: 150,
                       marginTop: 1,
-                      marginBottom: 2,
+                      marginBottom: 3,
                       padding: 0,
                     }}
                     onClick={() => alert("Button Clicked")}
@@ -132,6 +148,7 @@ export const ShowAuth = () => {
                   <Button
                     variant="contained"
                     fullWidth
+                    sx={{ height: "48px" }}
                     onClick={() => handleClick("/groups")}
                   >
                     <Typography color={theme.palette.success.contrastText}>
@@ -149,7 +166,7 @@ export const ShowAuth = () => {
                 onClick={() => alert("Button Clicked")}
               >
                 <Typography
-                  marginY={1}
+                  marginY={2}
                   paddingY={1}
                   paddingX={4}
                   textAlign={"center"}

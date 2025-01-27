@@ -1,7 +1,16 @@
-import { createTheme } from "@mui/material";
+import { createTheme } from '@mui/material';
 
 //アプリテーマ
 export const theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
   typography: {
     fontFamily: "Roboto",
     fontSize: 16,
