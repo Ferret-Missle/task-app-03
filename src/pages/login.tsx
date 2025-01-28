@@ -1,3 +1,4 @@
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -13,6 +14,7 @@ import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
+import { auth } from "../assets/firebase";
 import googleIcon from "../assets/googleg.svg";
 import { theme } from "../components/theme";
 
@@ -22,31 +24,31 @@ export const ShowAuth = () => {
   const [switchScreen, setSwitchScreen] = useState(true);
 
   // //Googleアカウントでのログイン
-  // const singInWithGoogle = async () => {};
+
+  const singInWithGoogle = async () => {
+    return;
+  };
   // //メールアドレスでのログイン
-  // const singInWithEmail = async () => {};
+  // const singInWithEmail = async () => {
+  //   alert("SignIn with Email");
+  // };
+  const signUpWithEmail = async (e) => {
+    e.preventDefault();
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+    } catch (error: unknown) {
+      alert(error);
+    }
+  };
+  const forgetPassword = () => {
+    alert("forget Password");
+  };
 
   // 画面遷移
   const navi = useNavigate();
   const handleClick = (url: string) => navi(url);
 
-  //ボタン動作
-  // const handleLogin = () => {
-  //   return;
-  // };
-  const handleRegist = () => {
-    alert("click Register Button");
-  };
-
   return (
-    // <>
-    //   <Box sx={{ display: "flex", flexDirection: "column" }}>
-    //     <h1>ユーザー登録</h1>
-    //     <Button onClick={() => handleClick("/groups")} variant="contained">
-    //       ログインボタン（Auth処理は後回し）
-    //     </Button>
-    //   </Box>
-    // </>
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
@@ -56,7 +58,7 @@ export const ShowAuth = () => {
             height={"48px"}
             margin={"12px 0px 0px 12px"}
             bgcolor={"white"}
-            sx={{ marginBottom: "24px" }}
+            sx={{ marginBottom: "54px" }}
           >
             <Typography
               fontSize={"28px"}
@@ -64,7 +66,7 @@ export const ShowAuth = () => {
                 textAlign: "left",
               }}
             >
-              header
+              めもめもくん
             </Typography>
           </Box>
         </header>
@@ -86,7 +88,6 @@ export const ShowAuth = () => {
                     [theme.breakpoints.up("xs")]: { width: "100%" },
                     [theme.breakpoints.up("sm")]: { width: "60%" },
                     [theme.breakpoints.up("md")]: { width: "40%" },
-                    // [theme.breakpoints.up("lg")]: { width: "40%" },
                     marginX: "auto",
                     marginTop: "12px",
                     marginBottom: "24px",
@@ -95,7 +96,7 @@ export const ShowAuth = () => {
                   <CardContent sx={{ marginY: 1, textAlign: "center" }}>
                     <IconButton
                       sx={{ border: "0.5px solid", marginBottom: "8px" }}
-                      onClick={() => alert("Button Clicked")}
+                      onClick={singInWithGoogle}
                     >
                       <img src={googleIcon} width={"40px"} />
                     </IconButton>
@@ -146,7 +147,7 @@ export const ShowAuth = () => {
                           marginBottom: 3,
                           padding: 0,
                         }}
-                        onClick={() => alert("Button Clicked")}
+                        onClick={forgetPassword}
                       >
                         <Typography
                           fontSize={"10px"}
@@ -208,25 +209,12 @@ export const ShowAuth = () => {
                     border: "0.1px solid lightgray",
                     [theme.breakpoints.up("xs")]: { width: "100%" },
                     [theme.breakpoints.up("sm")]: { width: "60%" },
-                    [theme.breakpoints.up("md")]: { width: "30%" },
+                    [theme.breakpoints.up("md")]: { width: "40%" },
                     marginX: "auto",
                     marginTop: "12px",
                     marginBottom: "24px",
                   }}
                 >
-                  <CardContent sx={{ marginY: 1, textAlign: "center" }}>
-                    <IconButton
-                      sx={{ border: "0.5px solid", marginBottom: "8px" }}
-                      onClick={() => alert("Button Clicked")}
-                    >
-                      <img src={googleIcon} width={"40px"} />
-                    </IconButton>
-                    <Typography fontSize={"12px"}>Googleで新規登録</Typography>
-                  </CardContent>
-                  <CardContent sx={{ padding: "0", textAlign: "center" }}>
-                    <Typography fontSize={"12px"}>or</Typography>
-                  </CardContent>
-                  <Divider />
                   <CardContent sx={{ marginY: "8px", textAlign: "center" }}>
                     <form>
                       <Box marginBottom={"18px"}>
@@ -235,7 +223,7 @@ export const ShowAuth = () => {
                           textAlign={"left"}
                           sx={{ marginBottom: "4px" }}
                         >
-                          メールアドレス
+                          メールアドレス*
                         </Typography>
                         <TextField
                           value={email}
@@ -252,7 +240,23 @@ export const ShowAuth = () => {
                           textAlign={"left"}
                           sx={{ marginBottom: "4px" }}
                         >
-                          パスワード
+                          パスワード*
+                        </Typography>
+                        <TextField
+                          value={password}
+                          label="（大文字・小文字・数字を含む６文字以上の半角英数字）"
+                          onChange={(e) => setPassword(e.target.value)}
+                          fullWidth
+                          sx={{ fontSize: "16px", marginBottom: "48px" }}
+                        />
+                      </Box>
+                      <Box>
+                        <Typography
+                          fontSize={"16px"}
+                          textAlign={"left"}
+                          sx={{ marginBottom: "4px" }}
+                        >
+                          パスワード確認*
                         </Typography>
                         <TextField
                           value={password}
@@ -265,7 +269,7 @@ export const ShowAuth = () => {
                         variant="contained"
                         fullWidth
                         sx={{ height: "48px" }}
-                        onClick={() => handleRegist}
+                        onClick={signUpWithEmail}
                       >
                         <Typography color={theme.palette.success.contrastText}>
                           新規登録
