@@ -1,4 +1,7 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -21,28 +24,60 @@ import { theme } from "../components/theme";
 export const ShowAuth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
   const [switchScreen, setSwitchScreen] = useState(true);
 
-  // //Googleアカウントでのログイン
-
-  const singInWithGoogle = async () => {
-    return;
+  //ログイン・登録ページ切り替え
+  const handlePage = () => {
+    setSwitchScreen(!switchScreen);
+    setEmail("");
+    setPassword("");
+    setConfirm("");
   };
-  // //メールアドレスでのログイン
-  // const singInWithEmail = async () => {
-  //   alert("SignIn with Email");
+
+  // //Googleアカウントでのログイン
+  // const singInWithGoogle = async () => {
+  //   return;
   // };
-  const signUpWithEmail = async (e) => {
+
+  // //メールアドレスでのログイン
+  const signInWithEmail = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      handleClick("/groups");
+    } catch (error: unknown) {
+      alert("サインインに失敗しました。\n" + error);
+    }
+  };
+  //ログアウト
+  // const handleSignOut = () => {
+  //   signOut(auth);
+  // };
+  //メールアドレスでのユーザ登録
+  const signUpWithEmail = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
     } catch (error: unknown) {
-      alert(error);
+      alert("新規登録に失敗しました。\n" + error);
     }
   };
+  //パスワード再発行
   const forgetPassword = () => {
     alert("forget Password");
   };
+
+  //ユーザ情報保存
+  // const [userInfo, setUserInfo] = useState("");
+  // useEffect(() => {
+  //   const unsubscribed = auth.onAuthStateChanged((user) => {
+  //     setUserInfo(user);
+  //   });
+  //   return () => {
+  //     unsubscribed();
+  //   };
+  // });
 
   // 画面遷移
   const navi = useNavigate();
@@ -96,7 +131,7 @@ export const ShowAuth = () => {
                   <CardContent sx={{ marginY: 1, textAlign: "center" }}>
                     <IconButton
                       sx={{ border: "0.5px solid", marginBottom: "8px" }}
-                      onClick={singInWithGoogle}
+                      // onClick={singInWithGoogle}
                     >
                       <img src={googleIcon} width={"40px"} />
                     </IconButton>
@@ -118,6 +153,7 @@ export const ShowAuth = () => {
                         </Typography>
                         <TextField
                           value={email}
+                          placeholder="mail@example.com"
                           onChange={(e) => setEmail(e.target.value)}
                           fullWidth
                           sx={{
@@ -161,7 +197,8 @@ export const ShowAuth = () => {
                         variant="contained"
                         fullWidth
                         sx={{ height: "48px" }}
-                        onClick={() => handleClick("/groups")}
+                        // onClick={() => handleClick("/groups")}
+                        onClick={signInWithEmail}
                       >
                         <Typography color={theme.palette.success.contrastText}>
                           ログイン
@@ -175,7 +212,7 @@ export const ShowAuth = () => {
                     sx={{
                       padding: 0,
                     }}
-                    onClick={() => setSwitchScreen(!switchScreen)}
+                    onClick={handlePage}
                   >
                     <Typography
                       marginY={2}
@@ -217,7 +254,7 @@ export const ShowAuth = () => {
                 >
                   <CardContent sx={{ marginY: "8px", textAlign: "center" }}>
                     <form>
-                      <Box marginBottom={"18px"}>
+                      <Box marginBottom={"16px"}>
                         <Typography
                           fontSize={"16px"}
                           textAlign={"left"}
@@ -227,10 +264,12 @@ export const ShowAuth = () => {
                         </Typography>
                         <TextField
                           value={email}
+                          label="mail@example.com"
                           onChange={(e) => setEmail(e.target.value)}
                           fullWidth
                           sx={{
                             fontSize: "16px",
+                            padding: "0px",
                           }}
                         />
                       </Box>
@@ -244,10 +283,10 @@ export const ShowAuth = () => {
                         </Typography>
                         <TextField
                           value={password}
-                          label="（大文字・小文字・数字を含む６文字以上の半角英数字）"
+                          // label="（大文字・小文字・数字を含む６文字以上の半角英数字）"
                           onChange={(e) => setPassword(e.target.value)}
                           fullWidth
-                          sx={{ fontSize: "16px", marginBottom: "48px" }}
+                          sx={{ fontSize: "16px", marginBottom: "12px" }}
                         />
                       </Box>
                       <Box>
@@ -259,10 +298,10 @@ export const ShowAuth = () => {
                           パスワード確認*
                         </Typography>
                         <TextField
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
+                          value={confirm}
+                          onChange={(e) => setConfirm(e.target.value)}
                           fullWidth
-                          sx={{ fontSize: "16px", marginBottom: "48px" }}
+                          sx={{ fontSize: "16px", marginBottom: "36px" }}
                         />
                       </Box>
                       <Button
@@ -283,7 +322,7 @@ export const ShowAuth = () => {
                     sx={{
                       padding: 0,
                     }}
-                    onClick={() => setSwitchScreen(!switchScreen)}
+                    onClick={handlePage}
                   >
                     <Typography
                       marginY={2}
