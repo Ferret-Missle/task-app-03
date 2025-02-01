@@ -1,44 +1,82 @@
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { ThemeProvider } from "@emotion/react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Container from "@mui/material/Container";
-import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
+import { ThemeProvider } from '@emotion/react';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
-import { auth } from "../assets/firebase";
-import googleIcon from "../assets/googleg.svg";
-import { theme } from "../components/theme";
+import { auth } from '../assets/firebase';
+import googleIcon from '../assets/googleg.svg';
+import { theme } from '../components/theme';
 
 export const ShowAuth = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
-  const [switchScreen, setSwitchScreen] = useState(true);
+  //入力欄管理
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirm, setConfirm] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  //入力エラー処理
+  const [errMessage, setErrMessage] = useState<string>("");
+  const [inputEmailErr, setInputEmailErr] = useState<boolean>(false);
+  const [inputPasswordErr, setInputPasswordErr] = useState<boolean>(false);
+  const [inputConfirmErr, setInputConfirmErr] = useState<boolean>(false);
+  const [doEmailEdit, setDoEmailEdit] = useState<boolean>(false);
+  const [doPasswordEdit, setDoPasswordEdit] = useState<boolean>(false);
+  const [doConfirmEdit, setDoConfirmEdit] = useState<boolean>(false);
+  const [comparing, setComparing] = useState<boolean>(true);
+  const onEmailClick = () => {
+    setDoEmailEdit(true);
+  };
+  const onPasswordClick = () => {
+    setDoPasswordEdit(true);
+  };
+  const onConfirmClick = () => {
+    setDoConfirmEdit(true);
+  };
+  const onEmailBlur = (value: string) => {
+    if (!value && doEmailEdit) setInputEmailErr(true);
+  };
+  const onPasswordBlur = (value: string) => {
+    if (!value && doPasswordEdit) setInputPasswordErr(true);
+  };
+  const onConfirmBlur = (value: string) => {
+    if (!value && doConfirmEdit) setInputConfirmErr(true);
+  };
+  const comparePassword = () => {
+    //未記入でないかつ一致すればtrue
+    setComparing(password === confirm ? true : false);
+  };
 
   //ログイン・登録ページ切り替え
+  const [switchScreen, setSwitchScreen] = useState<boolean>(true);
   const handlePage = () => {
     setSwitchScreen(!switchScreen);
     setEmail("");
     setPassword("");
     setConfirm("");
+    setShowPassword(false);
+    setDoEmailEdit(false);
+    setDoPasswordEdit(false);
+    setDoConfirmEdit(false);
+    setInputEmailErr(false);
+    setInputPasswordErr(false);
+    setInputConfirmErr(false);
+    setComparing(true);
+    setErrMessage("");
   };
-
-  // //Googleアカウントでのログイン
-  // const singInWithGoogle = async () => {
-  //   return;
-  // };
 
   // //メールアドレスでのログイン
   const signInWithEmail = async (e: { preventDefault: () => void }) => {
@@ -47,7 +85,7 @@ export const ShowAuth = () => {
       await signInWithEmailAndPassword(auth, email, password);
       handleClick("/groups");
     } catch (error: unknown) {
-      alert("サインインに失敗しました。\n" + error);
+      setErrMessage("サインインに失敗しました：\n" + error);
     }
   };
   //ログアウト
@@ -57,27 +95,39 @@ export const ShowAuth = () => {
   //メールアドレスでのユーザ登録
   const signUpWithEmail = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-    } catch (error: unknown) {
-      alert("新規登録に失敗しました。\n" + error);
+
+    //入力内容不一致で終了
+    setInputEmailErr(email ? false : true);
+    setInputPasswordErr(password ? false : true);
+    setInputConfirmErr(confirm ? false : true);
+    comparePassword();
+
+    if (comparing) {
+      setErrMessage("入力されたパスワードが一致しません");
+      setInputPasswordErr(true);
+      setInputConfirmErr(true);
+      return;
+    } else {
+      setInputPasswordErr(false);
+      setInputConfirmErr(false);
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        handleClick("/groups");
+      } catch (error: unknown) {
+        setErrMessage("新規登録に失敗しました：\n" + error);
+      }
     }
   };
   //パスワード再発行
   const forgetPassword = () => {
     alert("forget Password");
   };
+  // //Googleアカウントでのログイン
+  // const singInWithGoogle = async () => {
+  //   return;
+  // };
 
   //ユーザ情報保存
-  // const [userInfo, setUserInfo] = useState("");
-  // useEffect(() => {
-  //   const unsubscribed = auth.onAuthStateChanged((user) => {
-  //     setUserInfo(user);
-  //   });
-  //   return () => {
-  //     unsubscribed();
-  //   };
-  // });
 
   // 画面遷移
   const navi = useNavigate();
@@ -143,36 +193,54 @@ export const ShowAuth = () => {
                   <Divider />
                   <CardContent sx={{ marginY: "8px", textAlign: "center" }}>
                     <form>
-                      <Box marginBottom={"18px"}>
+                      <Box marginBottom={"20px"}>
                         <Typography
                           fontSize={"16px"}
                           textAlign={"left"}
-                          sx={{ marginBottom: "4px" }}
+                          sx={{ marginBottom: "24px" }}
                         >
-                          メールアドレス
+                          メールアドレス/パスワードでログイン
                         </Typography>
                         <TextField
                           value={email}
+                          label="メールアドレス"
                           placeholder="mail@example.com"
+                          type="email"
+                          required
+                          onClick={() => onEmailClick()}
                           onChange={(e) => setEmail(e.target.value)}
                           fullWidth
-                          sx={{
-                            fontSize: "16px",
-                          }}
+                          onBlur={(e) => onEmailBlur(e.target.value)}
+                          error={inputEmailErr && !email}
+                          sx={{ fontSize: "16px" }}
                         />
                       </Box>
                       <Box>
-                        <Typography
-                          fontSize={"16px"}
-                          textAlign={"left"}
-                          sx={{ marginBottom: "4px" }}
-                        >
-                          パスワード
-                        </Typography>
                         <TextField
                           value={password}
+                          label="パスワード"
+                          type={showPassword ? "text" : "password"}
+                          required
+                          onClick={() => onPasswordClick()}
                           onChange={(e) => setPassword(e.target.value)}
                           fullWidth
+                          onBlur={(e) => onPasswordBlur(e.target.value)}
+                          error={inputPasswordErr && !password}
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  onClick={() => setShowPassword(!showPassword)}
+                                >
+                                  {showPassword ? (
+                                    <VisibilityOffIcon />
+                                  ) : (
+                                    <VisibilityIcon />
+                                  )}
+                                </IconButton>
+                              </InputAdornment>
+                            ),
+                          }}
                           sx={{ fontSize: "16px", padding: "0" }}
                         />
                       </Box>
@@ -197,8 +265,8 @@ export const ShowAuth = () => {
                         variant="contained"
                         fullWidth
                         sx={{ height: "48px" }}
-                        // onClick={() => handleClick("/groups")}
                         onClick={signInWithEmail}
+                        disabled={email && password ? false : true}
                       >
                         <Typography color={theme.palette.success.contrastText}>
                           ログイン
@@ -254,61 +322,104 @@ export const ShowAuth = () => {
                 >
                   <CardContent sx={{ marginY: "8px", textAlign: "center" }}>
                     <form>
-                      <Box marginBottom={"16px"}>
-                        <Typography
-                          fontSize={"16px"}
-                          textAlign={"left"}
-                          sx={{ marginBottom: "4px" }}
-                        >
-                          メールアドレス*
-                        </Typography>
+                      <Box marginBottom={"20px"}>
                         <TextField
                           value={email}
-                          label="mail@example.com"
+                          label="メールアドレス"
+                          placeholder="mail@example.com"
+                          type="email"
+                          required
+                          onClick={() => onEmailClick()}
                           onChange={(e) => setEmail(e.target.value)}
                           fullWidth
+                          onBlur={(e) => onEmailBlur(e.target.value)}
+                          error={inputEmailErr && !email}
                           sx={{
                             fontSize: "16px",
                             padding: "0px",
                           }}
                         />
                       </Box>
-                      <Box>
-                        <Typography
-                          fontSize={"16px"}
-                          textAlign={"left"}
-                          sx={{ marginBottom: "4px" }}
-                        >
-                          パスワード*
-                        </Typography>
+                      <Box marginBottom={"20px"}>
                         <TextField
                           value={password}
-                          // label="（大文字・小文字・数字を含む６文字以上の半角英数字）"
+                          label="パスワード"
+                          type={showPassword ? "text" : "password"}
+                          required
+                          onClick={() => onPasswordClick()}
                           onChange={(e) => setPassword(e.target.value)}
                           fullWidth
-                          sx={{ fontSize: "16px", marginBottom: "12px" }}
+                          onBlur={(e) => onPasswordBlur(e.target.value)}
+                          error={
+                            doPasswordEdit &&
+                            (inputPasswordErr || password === "")
+                          }
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  onClick={() => setShowPassword(!showPassword)}
+                                >
+                                  {showPassword ? (
+                                    <VisibilityOffIcon />
+                                  ) : (
+                                    <VisibilityIcon />
+                                  )}
+                                </IconButton>
+                              </InputAdornment>
+                            ),
+                          }}
+                          sx={{ fontSize: "16px" }}
                         />
                       </Box>
-                      <Box>
-                        <Typography
-                          fontSize={"16px"}
-                          textAlign={"left"}
-                          sx={{ marginBottom: "4px" }}
-                        >
-                          パスワード確認*
-                        </Typography>
+                      <Box marginBottom={"20px"}>
                         <TextField
                           value={confirm}
+                          label="パスワード確認"
+                          type={showPassword ? "text" : "password"}
+                          required
+                          onClick={() => onConfirmClick()}
                           onChange={(e) => setConfirm(e.target.value)}
                           fullWidth
-                          sx={{ fontSize: "16px", marginBottom: "36px" }}
+                          onBlur={(e) => onConfirmBlur(e.target.value)}
+                          error={
+                            doConfirmEdit && (inputConfirmErr || confirm === "")
+                          }
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  onClick={() => setShowPassword(!showPassword)}
+                                >
+                                  {showPassword ? (
+                                    <VisibilityOffIcon />
+                                  ) : (
+                                    <VisibilityIcon />
+                                  )}
+                                </IconButton>
+                              </InputAdornment>
+                            ),
+                          }}
+                          sx={{ fontSize: "16px", marginBottom: "20px" }}
                         />
+                        {errMessage ? (
+                          <Typography
+                            color={"red"}
+                            fontSize={"12px"}
+                            textAlign={"left"}
+                          >
+                            {errMessage}
+                          </Typography>
+                        ) : (
+                          ""
+                        )}
                       </Box>
                       <Button
                         variant="contained"
                         fullWidth
                         sx={{ height: "48px" }}
                         onClick={signUpWithEmail}
+                        disabled={email && password && confirm ? false : true}
                       >
                         <Typography color={theme.palette.success.contrastText}>
                           新規登録

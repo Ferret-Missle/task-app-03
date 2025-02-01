@@ -1,31 +1,31 @@
-import dayjs from "dayjs";
-import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { v4 as uuidv4 } from "uuid";
+import dayjs from 'dayjs';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { v4 as uuidv4 } from 'uuid';
 
-import AddIcon from "@mui/icons-material/Add";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { ThemeProvider } from "@mui/material";
-import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Fab from "@mui/material/Fab";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import TextField from "@mui/material/TextField";
+import AddIcon from '@mui/icons-material/Add';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { ThemeProvider } from '@mui/material';
+import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Fab from '@mui/material/Fab';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
 
-import { taskInfo } from "../app";
-import { tasksState } from "../assets/states";
-import { ShowAppBar } from "../components/appBar";
-import { theme } from "../components/theme";
+import { taskInfo } from '../app';
+import { tasksState } from '../assets/states';
+import { ShowAppBar } from '../components/appBar';
+import { theme } from '../components/theme';
 
 export const ShowTaskList = () => {
   const param = useParams();
@@ -211,7 +211,8 @@ export const ShowTaskList = () => {
           <DialogTitle>{"タスクの" + (isEdit ? "編集" : "追加")}</DialogTitle>
           <DialogContent sx={{ padding: "8px 24px" }}>
             <TextField
-              label="タスク名（必須）"
+              label="タスク名"
+              required
               autoFocus
               value={taskname}
               onClick={() => onClickInput()}
@@ -228,7 +229,8 @@ export const ShowTaskList = () => {
           </DialogContent>
           <DialogContent sx={{ padding: "8px 24px" }}>
             <TextField
-              label="期限日（必須）"
+              label="期限日"
+              required
               value={taskdate}
               onChange={(e) => setTaskdate(e.target.value)}
               type="date"
