@@ -36,7 +36,6 @@ export const ShowAuth = () => {
   const [doEmailEdit, setDoEmailEdit] = useState<boolean>(false);
   const [doPasswordEdit, setDoPasswordEdit] = useState<boolean>(false);
   const [doConfirmEdit, setDoConfirmEdit] = useState<boolean>(false);
-  const [comparing, setComparing] = useState<boolean>(true);
   const onEmailClick = () => {
     setDoEmailEdit(true);
   };
@@ -55,10 +54,6 @@ export const ShowAuth = () => {
   const onConfirmBlur = (value: string) => {
     if (!value && doConfirmEdit) setInputConfirmErr(true);
   };
-  const comparePassword = () => {
-    //未記入でないかつ一致すればtrue
-    setComparing(password === confirm ? true : false);
-  };
 
   //ログイン・登録ページ切り替え
   const [switchScreen, setSwitchScreen] = useState<boolean>(true);
@@ -74,7 +69,6 @@ export const ShowAuth = () => {
     setInputEmailErr(false);
     setInputPasswordErr(false);
     setInputConfirmErr(false);
-    setComparing(true);
     setErrMessage("");
   };
 
@@ -96,24 +90,26 @@ export const ShowAuth = () => {
   const signUpWithEmail = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    //入力内容不一致で終了
+    //入力欄が空欄の時にErr設定
     setInputEmailErr(email ? false : true);
     setInputPasswordErr(password ? false : true);
     setInputConfirmErr(confirm ? false : true);
-    comparePassword();
 
-    if (comparing) {
+    //入力内容不一致で終了
+    if (!password || !confirm) {
+      //未入力でボタンは押せないが念のため
+      setErrMessage("全て入力してください");
+    } else if (password !== confirm) {
       setErrMessage("入力されたパスワードが一致しません");
       setInputPasswordErr(true);
       setInputConfirmErr(true);
-      return;
     } else {
-      setInputPasswordErr(false);
-      setInputConfirmErr(false);
       try {
         await createUserWithEmailAndPassword(auth, email, password);
         handleClick("/groups");
       } catch (error: unknown) {
+        //エラー内容ごとに表示分岐
+        // FirebaseError: Firebase: Missing password requirements: [Password must contain at least 8 characters] (auth/password-does-not-meet-requirements).
         setErrMessage("新規登録に失敗しました：\n" + error);
       }
     }
@@ -254,7 +250,7 @@ export const ShowAuth = () => {
                         onClick={forgetPassword}
                       >
                         <Typography
-                          fontSize={"10px"}
+                          fontSize={"12px"}
                           textAlign={"center"}
                           sx={{ textDecoration: "underline" }}
                         >
