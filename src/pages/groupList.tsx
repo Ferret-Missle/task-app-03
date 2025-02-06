@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { RecoilRoot, useRecoilState } from 'recoil';
+import { RecoilRoot, useRecoilState, useRecoilValue } from 'recoil';
 
 import AddIcon from '@mui/icons-material/Add';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -21,11 +21,13 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 import { taskInfo } from '../app';
-import { groupState, tasksState } from '../assets/states';
+import { groupState, tasksState, userState } from '../assets/states';
 import { ShowAppBar } from '../components/appBar';
 import { theme } from '../components/theme';
 
 export const ShowGroupList = () => {
+  const user = useRecoilValue(userState);
+
   //画面遷移
   const navi = useNavigate();
   const handleClick = (url: string) => navi(url);
@@ -116,7 +118,10 @@ export const ShowGroupList = () => {
     <RecoilRoot>
       <ThemeProvider theme={theme}>
         <header>
-          <ShowAppBar title="フォルダ一覧" isGroupList={true} />
+          <ShowAppBar
+            title={"フォルダ一覧 [" + user?.email + "]"}
+            isGroupList={true}
+          />
         </header>
         <body>
           <List>
