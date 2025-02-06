@@ -1,29 +1,31 @@
 import {
-    createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword
-} from 'firebase/auth';
-import { useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { RecoilRoot, useRecoilState } from 'recoil';
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import { RecoilRoot, useRecoilState } from "recoil";
 
-import { ThemeProvider } from '@emotion/react';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
+import { ThemeProvider } from "@emotion/react";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Container from "@mui/material/Container";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 
-import { auth } from '../assets/firebase';
-import googleIcon from '../assets/googleg.svg';
-import { userState } from '../assets/states';
-import { theme } from '../components/theme';
+import { auth } from "../assets/firebase";
+import googleIcon from "../assets/googleg.svg";
+import { userState } from "../assets/states";
+import { theme } from "../components/theme";
 
 export const ShowAuth = () => {
   //入力欄管理
@@ -158,7 +160,7 @@ export const ShowAuth = () => {
                       textAlign: "left",
                     }}
                   >
-                    {user ? user?.email : "LogOut"}
+                    {user ? user.email : "LogOut"}
                   </Typography>
                 </Box>
               </header>
