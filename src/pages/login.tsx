@@ -2,7 +2,7 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
-  signInWithRedirect,
+  signInWithPopup,
 } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -125,10 +125,9 @@ export const ShowAuth = () => {
   const singInWithGoogle = async () => {
     try {
       // await signInWithPopup(auth, provider);
-      await signInWithRedirect(auth, provider);
+      await signInWithPopup(auth, provider);
       handleClick("/groups");
     } catch (error: unknown) {
-      alert("error");
       setErrMessage("サインインに失敗しました：\n" + error);
     }
   };
