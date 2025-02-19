@@ -1,29 +1,29 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { RecoilRoot, useRecoilState, useRecoilValue } from 'recoil';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { RecoilRoot, useRecoilState, useRecoilValue } from "recoil";
 
-import AddIcon from '@mui/icons-material/Add';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { ThemeProvider } from '@mui/material';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Fab from '@mui/material/Fab';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
+import AddIcon from "@mui/icons-material/Add";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { ThemeProvider } from "@mui/material";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Fab from "@mui/material/Fab";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 
-import { taskInfo } from '../app';
-import { groupState, tasksState, userState } from '../assets/states';
-import { ShowAppBar } from '../components/appBar';
-import { theme } from '../components/theme';
+import { taskInfo } from "../app";
+import { groupState, tasksState, userState } from "../assets/states";
+import { ShowAppBar } from "../components/appBar";
+import { theme } from "../components/theme";
 
 export const ShowGroupList = () => {
   const user = useRecoilValue(userState);

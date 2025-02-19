@@ -84,6 +84,7 @@ export const ShowAuth = () => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      console.log("password:", password);
       handleClick("/groups");
     } catch (error: unknown) {
       setErrMessage("サインインに失敗しました：\n" + error);
@@ -135,9 +136,16 @@ export const ShowAuth = () => {
   //ユーザ情報保存
   const [user, setUser] = useRecoilState(userState);
   useEffect(() => {
-    onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
     });
+
+    return () => unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 画面遷移
@@ -167,7 +175,7 @@ export const ShowAuth = () => {
                       textAlign: "left",
                     }}
                   >
-                    めもめもくん
+                    {`めもめもくん${user}`}
                   </Typography>
                 </Box>
               </header>
