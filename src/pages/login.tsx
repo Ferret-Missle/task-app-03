@@ -29,6 +29,7 @@ import { userState } from "../assets/states";
 import { theme } from "../components/theme";
 
 export const ShowAuth = () => {
+  //画面遷移
   //入力欄管理
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
